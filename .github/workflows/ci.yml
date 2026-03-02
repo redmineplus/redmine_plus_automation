@@ -212,6 +212,7 @@ jobs:
           docker exec redmine bash -c "cd /usr/src/redmine && bundle install" 2>&1 | tee artifacts/cypress/bundle_install.log
           docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rake redmine:plugins:migrate RAILS_ENV=production" 2>&1 | tee artifacts/cypress/migrate.log
           docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rake redmine:load_default_data REDMINE_LANG=en RAILS_ENV=production" 2>&1 | tee artifacts/cypress/load_default_data.log
+          docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rake assets:precompile RAILS_ENV=production" 2>&1 | tee artifacts/cypress/assets_precompile.log
           docker restart redmine
           for i in $(seq 1 30); do
             if docker exec redmine bash -c "curl -fsS http://localhost:3000/login >/dev/null"; then
