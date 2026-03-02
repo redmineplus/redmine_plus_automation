@@ -16,7 +16,7 @@ env:
   REDMINE_DB_DATABASE: redmine
   REDMINE_DB_USERNAME: redmine
   REDMINE_DB_PASSWORD: redmine
-  PLUGIN_DIR: /usr/src/redmine/plugins/redmine_plus_automation_community
+  PLUGIN_DIR: /usr/src/redmine/plugins/redmine_plus_automation
   REDMINE_SECRET_KEY_BASE: fa0257bdcf409dfacec9462c72ec1248484357ab9ec5ebd2403ce44a8bd313835122e1c762f5984a45ca72a82c2638b86aa7eea5a2b936d62af22e64eaac1453
 
 jobs:
@@ -68,7 +68,7 @@ jobs:
           mkdir -p artifacts/rspec
           docker exec redmine bash -c "cd /usr/src/redmine && bundle install --with development test" > artifacts/rspec/bundle_install.log 2>&1
           docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rake redmine:plugins:migrate RAILS_ENV=test" > artifacts/rspec/migrate.log 2>&1
-          docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rspec -Iplugins/redmine_plus_automation_community/spec plugins/redmine_plus_automation_community/spec" > artifacts/rspec/rspec.log 2>&1
+          docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rspec -Iplugins/redmine_plus_automation/spec plugins/redmine_plus_automation/spec" > artifacts/rspec/rspec.log 2>&1
 
       - name: Collect Logs
         if: always()
@@ -136,7 +136,7 @@ jobs:
           mkdir -p artifacts/rspec
           docker exec redmine bash -c "cd /usr/src/redmine && bundle install --with development test" > artifacts/rspec/bundle_install.log 2>&1
           docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rake redmine:plugins:migrate RAILS_ENV=test" > artifacts/rspec/migrate.log 2>&1
-          docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rspec -Iplugins/redmine_plus_automation_community/spec plugins/redmine_plus_automation_community/spec" > artifacts/rspec/rspec.log 2>&1
+          docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rspec -Iplugins/redmine_plus_automation/spec plugins/redmine_plus_automation/spec" > artifacts/rspec/rspec.log 2>&1
 
       - name: Collect Logs
         if: always()
@@ -221,16 +221,16 @@ jobs:
         run: |
           mkdir -p artifacts/cypress
           docker exec redmine bash -c "export DISPLAY=:99 && Xvfb :99 -screen 0 1920x1080x24 &"
-          docker exec redmine bash -c "cd /usr/src/redmine/plugins/redmine_plus_automation_community && npm install && npx cypress run --e2e" > artifacts/cypress/run.log 2>&1
-          docker cp redmine:/usr/src/redmine/plugins/redmine_plus_automation_community/cypress/videos artifacts/cypress/videos || true
-          docker cp redmine:/usr/src/redmine/plugins/redmine_plus_automation_community/cypress/screenshots artifacts/cypress/screenshots || true
+          docker exec redmine bash -c "cd /usr/src/redmine/plugins/redmine_plus_automation && npm install && npx cypress run --e2e" > artifacts/cypress/run.log 2>&1
+          docker cp redmine:/usr/src/redmine/plugins/redmine_plus_automation/cypress/videos artifacts/cypress/videos || true
+          docker cp redmine:/usr/src/redmine/plugins/redmine_plus_automation/cypress/screenshots artifacts/cypress/screenshots || true
 
       - name: Collect Logs
         if: always()
         run: |
           mkdir -p artifacts/redmine_logs
           docker cp redmine:/usr/src/redmine/log artifacts/redmine_logs || true
-          docker cp redmine:/usr/src/redmine/plugins/redmine_plus_automation_community/cypress/screenshots artifacts/cypress/screenshots || true
+          docker cp redmine:/usr/src/redmine/plugins/redmine_plus_automation/cypress/screenshots artifacts/cypress/screenshots || true
           docker logs redmine > artifacts/redmine_logs/docker_redmine.log || true
 
       - uses: actions/upload-artifact@v4
