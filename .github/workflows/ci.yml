@@ -157,15 +157,15 @@ jobs:
 
 
   # ======================================================================
-  # E2E Cypress (Redmine 5 & 6)
+  # E2E Cypress (Redmine 5.1.6 & 6.1.1)
   # ======================================================================
   e2e:
+    name: E2E (Redmine ${{ matrix.redmine_version }})
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        redmine_version: [5.1.6]
-#        redmine_version: [5.1.6, 6.0.6]
+        redmine_version: [5.1.6, 6.1.1]
     steps:
       - uses: actions/checkout@v4
 
@@ -183,7 +183,7 @@ jobs:
           docker run -d --name redmine --network redmine-network -p 3000:3000 \
             -e REDMINE_DB_ADAPTER=$REDMINE_DB_ADAPTER \
             -e REDMINE_DB_HOST=$REDMINE_DB_HOST \
-            -e REDMINE_DB_PORT=$REDMINE_DB_PORT \
+            -e REDMINE_DB_PORT=3306 \
             -e REDMINE_DB_DATABASE=$REDMINE_DB_DATABASE \
             -e REDMINE_DB_USERNAME=$REDMINE_DB_USERNAME \
             -e REDMINE_DB_PASSWORD=$REDMINE_DB_PASSWORD \
