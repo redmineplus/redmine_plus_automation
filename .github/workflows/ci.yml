@@ -211,7 +211,7 @@ jobs:
           docker cp . redmine:$PLUGIN_DIR
           docker exec redmine bash -c "cd /usr/src/redmine && bundle install" 2>&1 | tee artifacts/cypress/bundle_install.log
           docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rake redmine:plugins:migrate RAILS_ENV=production" 2>&1 | tee artifacts/cypress/migrate.log
-          docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rake redmine:plugins:assets RAILS_ENV=production NAME=redmine_plus_automation" 2>&1 | tee artifacts/cypress/plugins_assets.log
+          docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rake assets:precompile RAILS_ENV=production" 2>&1 | tee artifacts/cypress/assets_precompile.log
           docker exec redmine bash -c "cd /usr/src/redmine && bundle exec rake redmine:load_default_data REDMINE_LANG=en RAILS_ENV=production" 2>&1 | tee artifacts/cypress/load_default_data.log
           docker restart redmine
           sleep 20
